@@ -1,34 +1,10 @@
+
 import './styles.css';
-import {homePageData} from "./home.js";
-import { menuPageData } from './menu.js';
-import { AddaboutPage } from './about.js';
 
-homePageData();  
+import {addButton} from './moduls/ui.js';
+import {storageAvailable, storeProjects} from './moduls/storage.js'
 
 
-
-const menuButton = document.getElementById('menu-button');
-menuButton.addEventListener('click',()=>
-    {
-    const content = document.getElementById('content');
-    const dynamicContent = document.getElementById('dynamic-content');
-    content.removeChild(dynamicContent)
-    menuPageData()});
-
-
-    const homeButton = document.getElementById('home-button');
-    homeButton.addEventListener('click',()=>
-        {
-        const content = document.getElementById('content');
-        const dynamicContent = document.getElementById('dynamic-content');
-        content.removeChild(dynamicContent)
-        homePageData()})
-    
-
-        const aboutButton = document.getElementById('about-button');
-        aboutButton.addEventListener('click',()=>
-            {
-            const content = document.getElementById('content');
-            const dynamicContent = document.getElementById('dynamic-content');
-             content.removeChild(dynamicContent)
-             AddaboutPage()})
+addButton();
+storageAvailable();
+storeProjects();

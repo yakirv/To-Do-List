@@ -4,19 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
-    <title>Restaurant</title>
+    <title>To-Do-List</title>
 </head>
 <body>
-    <header>
-        <div>
-            <img src="./images/logo.png" id="logo">
-        </div>
+    <div class="header">
         <nav>
-            <button id="home-button">Home</button>
-            <button id="menu-button">Menu</button>
-            <button id="about-button">About</button>
+            <button>Home</button>
+            <button>My Projects</button>
+            <button>Home</button>
+
         </nav>
-    </header>
+    </div>
+    <div class="actions-menu">
+        <div class="projects">
+            <button id="new-project-button">Add new Project</button>
+        </div>
+        <div class="tasks">
+            <button id="new-task-button">Add new Task</button>
+        </div>
+    </div>
     <div id="content"></div>
+
+    <dialog id="new-task-popup">
+        <form method="dialog" id='newtaskForm'>
+            <h1 id="dialog-header">Add new task</h1>
+            <div class="dialog-inputs">
+                <label for="new-task-title">Title:</label>
+                <input type="text" id="new-task-title" name = "task-title" placeholder="Enter Title">
+                <label for="new-task-description">Description:</label>
+                <input type="text" id="new-task-description" name = "task-description" placeholder="Add Description">
+                <label for="new-task-priority">Priority</label>
+                <input type="text" id="new-task-priority" name = 'task-priority' placeholder="Priority">
+                
+            </div>
+            <!-- 
+            <input type="file" accept="image/*" id="file-upload" name="file-upload">
+            <div id = 'toggle-contianer'>
+                <p>Did you read this task?</p>
+                <label class="toggle">
+                    <input type="checkbox" name = "read-question">
+                    <span class="slider"></span>
+                </label>
+            </div> -->
+                <div id = 'dialog-buttons'>
+                <button id ="cancelBtn" value="cancel" >Cancel</button>
+                <button id="confirmBtn" type="submit" value="Confirm">Confirm</button>
+              </div>
+        </form>
+    </dialog>
 </body>
 </html>
