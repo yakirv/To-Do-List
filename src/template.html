@@ -7,22 +7,26 @@
     <title>To-Do-List</title>
 </head>
 <body>
+    <button id="floating-button">
+        +
+      </button>
     <div class="header">
         <nav>
-            <button>Home</button>
+            <button id="home-button">Home</button>
             <button>My Projects</button>
             <button>Home</button>
 
         </nav>
     </div>
-    <div class="actions-menu">
-        <div class="projects" id="projects-menu">
-            <button id="new-project-button">Add new Project</button>
-        </div>
-        <div class="tasks">
-            <button id="new-task-button">Add new Task</button>
-        </div>
-    </div>
+  
+        <div class="projects-menu" id="projects-menu">
+            <div class="projects-menu-new" id="projects-menu-new">
+                <button id="new-project-button">Add new Project</button>
+               
+            </div>
+       
+
+         </div>
     <div id="content">
         <div id="delete"></div>
     </div>
@@ -48,15 +52,6 @@
                 <input type="date" id="new-task-date" name="task-date" >
                 
             </div>
-            <!-- 
-            <input type="file" accept="image/*" id="file-upload" name="file-upload">
-            <div id = 'toggle-contianer'>
-                <p>Did you read this task?</p>
-                <label class="toggle">
-                    <input type="checkbox" name = "read-question">
-                    <span class="slider"></span>
-                </label>
-            </div> -->
                 <div id = 'dialog-buttons'>
                 <button id ="cancelBtn" value="cancel" >Cancel</button>
                 <button id="confirmBtn" type="submit" value="Confirm">Confirm</button>
