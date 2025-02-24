@@ -1,10 +1,13 @@
 
 import './styles.css';
 
-import {addButton} from './moduls/ui.js';
-import {storageAvailable, storeProjects} from './moduls/storage.js'
+import {UI}from './moduls/ui.js';
+import {Storage} from './moduls/storage.js'
 
+const ui = new UI; 
+ui.addButton();
+ui.createProjectList();
+ui.getNewTaskDetails();
 
-addButton();
-storageAvailable();
-storeProjects();
+const storage = new Storage;
+storage.storeProjects();
