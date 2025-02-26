@@ -30,30 +30,42 @@ export class Storage
        
     };
     
-    
+     addNewProject (project)
+    {
+        if (this.storageAvailable("localStorage")) {
+           
+            const projectString = project
+            const storedString = JSON.parse(localStorage.getItem('projects'));
+            storedString.push(projectString);
+            localStorage.setItem('projects',JSON.stringify(storedString));
+            
+           
+
+          } 
+    } 
     storeProjects()
     {
         if (this.storageAvailable("localStorage")) {
             const projects = ['Today', 'Week', 'Work'];
+            //const projects = ["Today", "Week", "Work"];
             const projectsString = JSON.stringify(projects);
             localStorage.setItem('projects', projectsString);
-            const storedProjects = JSON.parse(projectsString)
+          
            
     
           } else {
             // Too bad, no localStorage for us
           } 
     }
+   
     
 
     storeTasks(userDetails)
     {
         const ui = new UI;
         const userInput = userDetails;
-        console.log(tasks);
         tasks.push(userInput);
-        console.log(tasks);
-      
+       
     }
 
      sortTasksByDate(array, dateKey, ascending = true) {
