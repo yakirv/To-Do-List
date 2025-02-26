@@ -194,7 +194,7 @@ body
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 2em 2em ;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     border-radius: 20px;
     margin: 0.5em 1em;
     background-color: white;

@@ -77,7 +77,7 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
        if (validityState.valueMissing) {
           input.setCustomValidity("empty");
       } else if (validityState.rangeUnderflow) {
-         console.log (input.setCustomValidity("We need a higher number!"));
+        input.setCustomValidity("We need a higher number!");
         } else if (validityState.rangeOverflow) {
           input.setCustomValidity("That's too high!");
        } else {
@@ -395,8 +395,8 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
                 }
                 const closePopUp =()=>
                     {
-                      storeData()
-                      console.log(tasks)
+                      storeData();
+                   
                       newtaskForm.reset();
                       overlay.style.display = 'none';
                       newTaskDialog.close();
