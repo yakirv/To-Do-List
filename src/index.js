@@ -1,5 +1,6 @@
 
 import './styles.css';
+import './calendar.css'
 
 import {UI}from './moduls/ui.js';
 import {Storage} from './moduls/storage.js'
