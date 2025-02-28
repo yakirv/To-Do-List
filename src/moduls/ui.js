@@ -1,5 +1,6 @@
 
 import { Storage } from "./storage.js";
+import {EventHandlers } from "./eventHandlers.js";
 import { format, formatInTimeZone } from 'date-fns-tz';
 import { el, enUS } from 'date-fns/locale'; 
 import flatpickr from "flatpickr";
@@ -13,7 +14,7 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
  export class UI
  {
      storage = new Storage;
-     
+     eventHandle = new EventHandlers;
     calander= ()=>
      {
        const dateInput = document.getElementById('datetimepicker');
@@ -37,12 +38,14 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
     });
 
      };
-     format(datenew)
+
+     /////////////////////////// delete after inspection
+    /*  formatDate(datenew)
      {
          date = datenew.matc;
          const formatted = 'dd/mm/yyyy';
          return formatted;
-     };
+     }; */
      getCurrentdate = ()=>
      {
         
@@ -50,7 +53,7 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
         const formatteddate = format(nowUtc, 'dd/MM/yyyy');
         const formattedTime = format(nowUtc, 'HH:mm:ss');
         return {formattedTime, formatteddate, nowUtc}
-     } 
+     } ;
      
      addClock = ()=>
      {
@@ -69,7 +72,8 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
         date.innerHTML= `Happy ${currentDay}!`
         const intevalTime = setInterval(getnowCurrentDate, 1000);
         
-     }
+     };
+
       validate=(inputID) =>{
         const input = document.getElementById(inputID);
        const validityState = input.validity;
@@ -91,6 +95,7 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
          return {isvalid, errorReason};
       };
 
+            
 
      addInputsListenrers =(className)=>
      {
@@ -100,54 +105,61 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
            if (formFields.length > 1)
             {
                  formFields.forEach(el=>
-            el.addEventListener('change',()=>
-           {
-            if(!el.validity.valid)
-                el.style.border= '2px solid #dc3737a2'; 
-           else
-            el.style.border= 'none' ; 
-           } ))
-            }
-           else if (formFields.length == 1)
-            {
-                
-                formFields[0].addEventListener('change',()=>
+                 {   
+                    if (el.id != '')
                     {
-                     if(!formFields[0].validity.valid)
-                        formFields[0].style.border= '2px solid #dc3737a2'; 
-                    else
-                    formFields[0].style.border= 'none' ; 
-                    } )
+                        this.eventHandle.blur_inputValidate(el);
+                        this.eventHandle.focus_inputValidate(el);}
+                     });
+           }        
+            else if (formFields.length == 1)
+            {
+                this.eventHandle.blur_inputValidate(formFields[0]);
+                this.eventHandle.focus_inputValidate(formFields[0]);
+
+              } 
             } 
-           
-     }
     
      addButton = ()=>
     {
         const newTaskBtn = document.getElementById('floating-button');
         const newTaskDialog =document.getElementById ('new-task-popup');
         const overlay = document.getElementById('overlay');
+        const newtaskForm = document.getElementById('newtaskForm');
+        const inputValues = Array.from(newtaskForm.querySelectorAll("input, select, textarea")).filter(element => element.name);
         
-        
-        
-        newTaskBtn.addEventListener('click',()=>{
-            this.calander()
-            this.addInputsListenrers('new-task-input');  
-            overlay.style.display= 'block';
-            newTaskDialog.show();
+         newTaskBtn.addEventListener('click',()=>{
+             this.calander()
+             inputValues.forEach(input =>
+             {
+                // this.addInputsListenrers(input.className); 
+                this.eventHandle.blur_inputValidate(input);
+                this.eventHandle.focus_inputValidate(input);
+             })
+          
+
+            
+             overlay.style.display= 'block';
+             newTaskDialog.show();
             });
     }
     newProject = ()=>
     {
         const addProjectBtn = document.getElementById('new-project-button')
         const newProjectPopup = document.getElementById('new-project-popup');
+        const newProjectField = document.getElementById('new-project-name');
         const overlay = document.getElementById('overlay');
+     
 
         addProjectBtn.addEventListener('click', ()=>
         {
-            this.addInputsListenrers('new-project-input');  
+           // this.addInputsListenrers('new-project-input'); 
+            
             overlay.style.display= 'block';
             newProjectPopup.show();
+       //   this.eventHandle.blur_inputValidate(newProjectField);
+         // this.eventHandle.focus_inputValidate(newProjectField);
+           
 
         })
     }
@@ -166,24 +178,35 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
         
                 dialogConfirmBtn.addEventListener('click', (event)=>{
 
+                    const validateField =  this.eventHandle.submitButtonValidation();
+                    if (!validateField)
+                    {
+                        console.error('filed is empty')
+                    }
+                    else {
                     const  projectMenu = document.getElementById('projects-menu');
                     const projectList = document.getElementById('projects-menu-list');
-                    projectMenu.removeChild(projectList);
                     const listElement = document.createElement('div');
+                    const selectParentDiv = document.getElementById('dialog-taks-inputs');
+                    const selectDiv= document.getElementById('new-task-project');
+                   
+                    const newOptions = document.createElement('select');
+                   
+
+                    projectMenu.removeChild(projectList);
                     listElement.id='projects-menu-list';
                     projectMenu.appendChild(listElement);
 
-                    const selectParentDiv = document.getElementById('dialog-taks-inputs');
-                    const selectDiv= document.getElementById('new-task-project');
+                  
                     selectParentDiv.removeChild(selectDiv);
-                    const newOptions = document.createElement('select');
+                   
                     newOptions.id = 'new-task-project';
                     newOptions.name = 'new-task-project';
                    
                     selectParentDiv.appendChild(newOptions);
 
 
-                    event.preventDefault();
+                   
                     const formData = new FormData(newProjectForm);
                     const userProjectName = formData.get('project-name');
                     this.getNewProjectName=()=>
@@ -192,10 +215,16 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
                     } 
                     this.storage.addNewProject(this.getNewProjectName());
                     this.createProjectList();
-
+                   // event.preventDefault();
+                 
                     newProjectForm.reset();
                     overlay.style.display = 'none';
                     newProjectDialog.close()
+                    
+                        console.info('Field input is validate');
+                    }
+
+                   
                 })
                 dialogCancelBtn.addEventListener('click',
                     ()=>{
@@ -366,7 +395,7 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
                
                 const inputsElements = document.getElementsByClassName('new-task-input');
                 const inputsElementsArray = Array.from(inputsElements);
-                let fieldValidate = false;
+                let fieldValidate = true;
                
               
                 
@@ -427,23 +456,30 @@ export let tasks = [{title:'Pay-bills',descriptiopn:'Pay electric bill',priority
 
                     inputsElementsArray.every((el) =>
                         {
+                            //this.eventHandle.inputValidation(el.id)
+                        })
+                        /*
                          if (el.id != '')
+                         {
                             fieldValidate= this.validate(el.id).isvalid;
-    
+                         
                          if (fieldValidate)
                             {
-                            return true;}
+                            return true;    
+                           }
     
-                         if(!fieldValidate)
+                            if(!fieldValidate)
                             {
                            const error = this.validate(el.id).errorReason;
                            return false, error;
-                          
-                             }});
-    
+                             }
+                            }
+                            }); */
+                           
+                            
                           if (fieldValidate)
                           {closePopUp()}
-                          else if (fieldValidate[0])
+                          else if (fieldValidate.errorReason)
                           {
                            /* console.log(error) */
                           }
